@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Indian Oil &amp; Honey Supply Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Ctext y='8' font-size='8'%3E🍯%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef1f5;
+            --card: #fff;
+            --ink: #14202e;
+            --mut: #5b6b7c;
+            --nav: #0f2742;
+            --line: #d8dee6;
+            --or: #e8750f;
+            --ok: #12805c;
+            --bad: #c0392b;
+            --wn: #b7791f;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme=light]) {
+                --bg: #0b1520;
+                --card: #122133;
+                --ink: #e6ecf3;
+                --mut: #93a4b6;
+                --nav: #08121d;
+                --line: #233549
+            }
+        }
+
+        :root[data-theme=dark] {
+            --bg: #0b1520;
+            --card: #122133;
+            --ink: #e6ecf3;
+            --mut: #93a4b6;
+            --nav: #08121d;
+            --line: #233549
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 14px/1.5 'IBM Plex Sans', system-ui, sans-serif
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+            color: inherit
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh
+        }
+
+        aside {
+            width: 220px;
+            background: var(--nav);
+            color: #dbe6f2;
+            padding: 16px 10px;
+            flex: none
+        }
+
+        aside .br {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 4px 8px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 1.2
+        }
+
+        aside a {
+            display: block;
+            padding: 9px 12px;
+            border-radius: 6px;
+            color: #b9c9da;
+            cursor: pointer;
+            margin-bottom: 2px
+        }
+
+        aside a:hover {
+            background: #1b3a5e
+        }
+
+        aside a.on {
+            background: var(--or);
+            color: #fff
+        }
+
+        main {
+            flex: 1;
+            min-width: 0;
+            padding: 20px 24px
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0
+        }
+
+        h3 {
+            margin: 0 0 10px;
+            font-size: 15px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--nav);
+            border-radius: 6px;
+            padding: 12px
+        }
+
+        .stat b {
+            display: block;
+            font-size: 19px
+        }
+
+        .stat span {
+            color: var(--mut);
+            font-size: 12px
+        }
+
+        .stat.or {
+            border-left-color: var(--or)
+        }
+
+        .stat.bd {
+            border-left-color: var(--bad)
+        }
+
+        .tw {
+            overflow-x: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--line);
+            white-space: nowrap
+        }
+
+        th {
+            color: var(--mut);
+            font-weight: 500;
+            font-size: 12px
+        }
+
+        tr.k:hover {
+            background: rgba(232, 117, 15, .07);
+            cursor: pointer
+        }
+
+        .btn {
+            background: var(--nav);
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            padding: 7px 13px;
+            cursor: pointer;
+            margin: 2px 4px 2px 0
+        }
+
+        .btn.or {
+            background: var(--or)
+        }
+
+        .btn.g {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--line)
+        }
+
+        .btn.r {
+            background: var(--bad)
+        }
+
+        .btn:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--or);
+            outline-offset: 2px
+        }
+
+        .bd2 {
+            display: inline-block;
+            padding: 1px 9px;
+            border-radius: 10px;
+            font-size: 12px;
+            background: #e3e9f1;
+            color: #1d3350
+        }
+
+        .s-Pending,
+        .s-Pending-Verification,
+        .s-Unpaid {
+            background: #fdecc8;
+            color: #7a4b00
+        }
+
+        .s-Approved,
+        .s-Verified,
+        .s-Paid,
+        .s-Delivered {
+            background: #d4f0e4;
+            color: #0b5b40
+        }
+
+        .s-Rejected,
+        .s-Cancelled,
+        .s-Overdue {
+            background: #f8d9d5;
+            color: #8b2417
+        }
+
+        .s-Dispatched,
+        .s-Partial,
+        .s-Partially-Delivered {
+            background: #d9e6fb;
+            color: #173f7d
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--mut);
+            margin: 8px 0 2px
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--card)
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0 14px
+        }
+
+        .bars div.r {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px 0
+        }
+
+        .bars i {
+            display: block;
+            height: 14px;
+            background: var(--or);
+            border-radius: 3px
+        }
+
+        .bars span {
+            width: 120px;
+            font-size: 12px;
+            color: var(--mut)
+        }
+
+        #m {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 12, 20, .6);
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            overflow: auto;
+            padding: 30px 12px;
+            z-index: 9
+        }
+
+        #m>div {
+            background: var(--card);
+            max-width: 680px;
+            width: 100%;
+            border-radius: 8px;
+            padding: 20px
+        }
+
+        #t {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            background: var(--nav);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            display: none;
+            z-index: 10;
+            max-width: 80vw
+        }
+
+        .login {
+            max-width: 400px;
+            margin: 8vh auto;
+            padding: 0 14px
+        }
+
+        .mut {
+            color: var(--mut)
+        }
+
+        .tl {
+            border-left: 2px solid var(--line);
+            padding-left: 12px;
+            margin: 0
+        }
+
+        .tl p {
+            margin: 0 0 8px
+        }
+
+        .warn {
+            background: #fdecc8;
+            color: #6b4200;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px
+        }
+
+        @media(max-width:800px) {
+            .app {
+                flex-direction: column
+            }
+
+            aside {
+                width: 100%;
+                display: flex;
+                overflow-x: auto;
+                padding: 8px
+            }
+
+            aside .br {
+                display: none
+            }
+
+            aside a {
+                white-space: nowrap;
+                margin: 0 4px 0 0
+            }
+
+            main {
+                padding: 14px
+            }
+        }
+
+        @media print {
+
+            aside,
+            .top,
+            .np {
+                display: none !important
+            }
+
+            #m {
+                position: static;
+                background: none;
+                padding: 0
+            }
+
+            body {
+                background: #fff
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="m"></div>
+    <div id="t" role="status"></div>
+    <script>
+        const K = 'ohsm_v1';
+        const logo = '<svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3C13 13 8 18 8 25a12 12 0 0 0 24 0c0-7-5-12-12-22z" fill="#e8750f"/><path d="M20 15l5 3v6l-5 3-5-3v-6z" fill="none" stroke="#fff" stroke-width="2"/></svg>';
+        const today = () => new Date().toISOString().slice(0, 10), addD = (d, n) => new Date(new Date(d).getTime() + n * 864e5).toISOString().slice(0, 10);
+        const inr = p => '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const q = n => Number(n).toLocaleString('en-IN');
+        const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const seed = () => ({
+            seq: { o: 1, i: 0, p: 0, d: 0 },
+            prods: [{ id: 'p1', name: 'Diesel', cat: 'Petroleum', unit: 'Litres', price: 9000, cost: 8600, tax: 0, stock: 40000, res: 0, min: 5000 },
+            { id: 'p2', name: 'Petrol', cat: 'Petroleum', unit: 'Litres', price: 10400, cost: 10000, tax: 0, stock: 25000, res: 0, min: 5000 },
+            { id: 'p3', name: 'Raw Honey', cat: 'Honey', unit: 'Kilograms', price: 31000, cost: 24000, tax: 5, stock: 3000, res: 0, min: 500 },
+            { id: 'p4', name: 'Organic Honey', cat: 'Honey', unit: 'Kilograms', price: 42000, cost: 33000, tax: 5, stock: 1200, res: 0, min: 300 }],
+            custs: [{ id: 'c1', name: 'ABC Petrol Pump', type: 'Petrol Pump', wa: '', credit: 2000000, terms: 7, city: 'Delhi' }, { id: 'c2', name: 'Green Hive Foods', type: 'Distributor', wa: '', credit: 500000, terms: 15, city: 'Pune' }],
+            orders: [], inv: [], pay: [], audit: [], wa: [], notes: [], disp: []
+        });
+        let S; try { S = JSON.parse(localStorage.getItem(K)) } catch (e) { }
+        if (!S) S = seed();
+        const save = () => { try { localStorage.setItem(K, JSON.stringify(S)) } catch (e) { } };
+        let U = null, V = 'dash', A = null, F = 'all';
+        const USERS = [{ id: 's', name: 'Supplier Admin – Shashi Oil & Honey', role: 'S' }, { id: 'b1', name: 'Buyer – ABC Petrol Pump', role: 'B', cust: 'c1' }, { id: 'b2', name: 'Buyer – Green Hive Foods', role: 'B', cust: 'c2' }];
+        const log = (a, ref) => { S.audit.unshift({ t: new Date().toLocaleString('en-IN'), u: U.name, a, ref: ref || '' }); save() };
+        const wa = (cid, msg) => { const c = S.custs.find(x => x.id === cid); S.wa.unshift({ t: new Date().toLocaleString('en-IN'), to: c.name + (c.wa ? ' (' + c.wa + ')' : ''), msg, st: 'DEMO MODE – not sent (no WhatsApp API credentials configured)' }) };
+        const toast = m => { const t = document.getElementById('t'); t.textContent = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3200) };
+        const P = id => S.prods.find(x => x.id == id), C = id => S.custs.find(x => x.id == id), O = id => S.orders.find(x => x.id == id), I = id => S.inv.find(x => x.id == id);
+        const oTot = (o, qty) => { const b = Math.round(qty * o.rate); return b + Math.round(b * o.tax / 100) };
+        const paid = i => S.pay.filter(p => p.inv == i.id && p.st == 'Verified').reduce((a, p) => a + p.amt, 0);
+        const bal = i => i.amt - paid(i);
+        const due = i => addD(i.date, i.terms);
+        const od = i => bal(i) > 0 && due(i) < today() ? Math.floor((new Date(today()) - new Date(due(i))) / 864e5) : 0;
+        const ist = i => bal(i) <= 0 ? 'Paid' : paid(i) > 0 ? 'Partial' : od(i) ? 'Overdue' : 'Unpaid';
+        const bg = s => `<span class="bd2 s-${esc(s).replace(/ /g, '-')}">${esc(s)}</span>`;
+        const myOrders = () => U.role == 'S' ? S.orders : S.orders.filter(o => o.cust == U.cust);
+        const myInv = () => U.role == 'S' ? S.inv : S.inv.filter(i => i.cust == U.cust);
+        const myPay = () => U.role == 'S' ? S.pay : S.pay.filter(p => p.cust == U.cust);
+        const custOut = c => S.inv.filter(i => i.cust == c).reduce((a, i) => a + bal(i), 0);
+        function hist(o, st, note) { o.status = st; o.h.push({ t: new Date().toLocaleString('en-IN'), s: st, u: U.name, n: note || '' }) }
+        function go(v, a) { V = v; A = a; render() }
+        function modal(h) { const m = document.getElementById('m'); if (!h) { m.style.display = 'none'; return } m.innerHTML = '<div>' + h + '</div>'; m.style.display = 'flex' }
+        function tbl(h, r, k) { return `<div class="tw"><table><tr>${h.map(x => '<th>' + x + '</th>').join('')}</tr>${r.length ? r.join('') : `<tr><td colspan="${h.length}" class="mut">Nothing here yet.</td></tr>`}</table></div>` }
+        function login(e) { e.preventDefault(); const u = USERS.find(x => x.id == uu.value); if (pw.value !== 'demo123') { toast('Wrong password. Demo password is demo123.'); return } U = u; V = 'dash'; render() }
+        function render() {
+            const r = document.getElementById('root');
+            if (!U) {
+                r.innerHTML = `<div class="login"><div class="card"><div style="display:flex;gap:10px;align-items:center">${logo}<div><b>INDIAN OIL &amp; HONEY<br>SUPPLY MANAGEMENT</b></div></div><p class="mut">Smart Supply. Complete Control. Transparent Business.</p>
+ <form onsubmit="login(event)"><label for="uu">Account</label><select id="uu">${USERS.map(u => `<option value="${u.id}">${esc(u.name)}</option>`).join('')}</select><label for="pw">Password</label><input id="pw" type="password" value="demo123" required><p><button class="btn or">Sign in</button></p></form>
+ <p class="mut" style="font-size:12px">Demo build: data is stored in this browser only. Password for all demo accounts: demo123.</p></div></div>`; return
+            }
+            const nav = U.role == 'S' ? [['dash', 'Dashboard'], ['ord', 'Orders'], ['cust', 'Customers'], ['prod', 'Products &amp; Stock'], ['inv', 'Invoices'], ['pay', 'Payments'], ['wa', 'WhatsApp'], ['aud', 'Audit log']] : [['dash', 'Dashboard'], ['new', 'Place order'], ['ord', 'My orders'], ['inv', 'My invoices'], ['pay', 'My payments'], ['stm', 'Statement']];
+            r.innerHTML = `<div class="app"><aside><div class="br">${logo}<span>INDIAN OIL &amp;<br>HONEY SUPPLY</span></div>${nav.map(n => `<a tabindex="0" class="${V == n[0] ? 'on' : ''}" onclick="go('${n[0]}')" onkeydown="if(event.key=='Enter')go('${n[0]}')">${n[1]}</a>`).join('')}</aside>
+ <main><div class="top"><div class="mut">${esc(U.name)}</div><div><button class="btn g" onclick="theme()">Light / Dark</button><button class="btn g" onclick="U=null;render()">Sign out</button></div></div><div id="v"></div></main></div>`;
+            document.getElementById('v').innerHTML = (VIEWS[V] || VIEWS.dash)();
+        }
+        function theme() { const d = document.documentElement; d.dataset.theme = d.dataset.theme == 'dark' ? 'light' : 'dark' }
+        const inRange = d => { if (F == 'all') return true; const n = F == 'today' ? 0 : F == '7' ? 7 : 30; return d >= addD(today(), -n) };
+        function bars(d, fmt) { const m = Math.max(1, ...d.map(x => x[1])); return `<div class="bars">${d.length ? d.map(x => `<div class="r"><span>${esc(x[0])}</span><i style="width:${Math.max(2, x[1] / m * 60)}%"></i><b>${fmt ? fmt(x[1]) : x[1]}</b></div>`).join('') : '<p class="mut">No data yet.</p>'}</div>` }
+        const VIEWS = {
+            dash() {
+                const os = myOrders().filter(o => inRange(o.date)), inv = myInv(), pays = myPay().filter(p => p.st == 'Verified');
+                const sales = inv.reduce((a, i) => a + i.amt, 0), rec = pays.reduce((a, p) => a + p.amt, 0), out = inv.reduce((a, i) => a + bal(i), 0), ovd = inv.filter(i => od(i)).reduce((a, i) => a + bal(i), 0);
+                const by = {}; os.forEach(o => by[o.status] = (by[o.status] || 0) + 1); const prodS = {}, custS = {}, mon = {};
+                inv.forEach(i => { const o = O(i.order); const pn = P(o.prod).name; prodS[pn] = (prodS[pn] || 0) + i.amt; const cn = C(i.cust).name; custS[cn] = (custS[cn] || 0) + i.amt; mon[i.date.slice(0, 7)] = (mon[i.date.slice(0, 7)] || 0) + i.amt });
+                const alerts = U.role == 'S' ? S.custs.filter(c => custOut(c.id) > c.credit).map(c => `<div class="warn">Credit limit exceeded: ${esc(c.name)} owes ${inr(custOut(c.id))} (limit ${inr(c.credit)})</div>`).join('') + S.prods.filter(p => p.stock <= p.min).map(p => `<div class="warn">Low stock: ${esc(p.name)} (${q(p.stock)} ${p.unit})</div>`).join('') : '';
+                const st = (l, v, c) => `<div class="stat ${c || ''}"><span>${l}</span><b>${v}</b></div>`;
+                return `<div class="top"><h1>${U.role == 'S' ? 'Supplier dashboard' : 'Buyer dashboard'}</h1><select style="width:auto" onchange="F=this.value;render()" aria-label="Date filter">${[['all', 'All time'], ['today', 'Today'], ['7', 'Last 7 days'], ['30', 'Last 30 days']].map(x => `<option value="${x[0]}" ${F == x[0] ? 'selected' : ''}>${x[1]}</option>`).join('')}</select></div>${alerts}
+ <div class="grid">${st('Orders', os.length)}${st('Pending approval', os.filter(o => o.status == 'Pending Approval').length, 'or')}${st('In delivery', os.filter(o => ['Approved', 'Dispatched'].includes(o.status)).length)}${st('Delivered', os.filter(o => o.status == 'Delivered').length)}
+ ${st('Invoiced', inr(sales))}${st('Verified payments', inr(rec))}${st('Outstanding', inr(out), 'or')}${st('Overdue', inr(ovd), 'bd')}${U.role == 'S' ? st('Customers', S.custs.length) + st('Stock lines', S.prods.length) : ''}</div>
+ <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))"><div class="card"><h3>Orders by status</h3>${bars(Object.entries(by))}</div><div class="card"><h3>Monthly invoiced</h3>${bars(Object.entries(mon), inr)}</div>
+ <div class="card"><h3>Product-wise sales</h3>${bars(Object.entries(prodS), inr)}</div>${U.role == 'S' ? `<div class="card"><h3>Customer-wise sales</h3>${bars(Object.entries(custS), inr)}</div>` : ''}</div>`
+            },
+            ord() { const os = [...myOrders()].reverse(); return `<div class="top"><h1>Orders</h1>${U.role == 'B' ? '<button class="btn or" onclick="go(\'new\')">Place order</button>' : ''}</div><div class="card">${tbl(['Order', 'Buyer', 'Product', 'Qty', 'Total', 'Status', 'Date'], os.map(o => `<tr class="k" onclick="go('od','${o.id}')"><td>${o.no}</td><td>${esc(C(o.cust).name)}</td><td>${esc(P(o.prod).name)}</td><td>${q(o.qty)} ${P(o.prod).unit}</td><td>${inr(oTot(o, o.qty))}</td><td>${bg(o.status)}</td><td>${o.date}</td></tr>`))}</div>` },
+            new() {
+                return `<h1>Place new order</h1><div class="card"><form onsubmit="placeOrder(event)"><div class="fg"><div><label>Product</label><select id="np" onchange="pv()">${S.prods.map(p => `<option value="${p.id}">${esc(p.name)} – ${inr(p.price)}/${p.unit}</option>`).join('')}</select></div>
+ <div><label>Quantity</label><input id="nq" type="number" min="1" step="any" required oninput="pv()"></div><div><label>Requested delivery date</label><input id="nd" type="date" min="${today()}" required></div><div><label>PO reference</label><input id="nr"></div></div>
+ <label>Delivery address / instructions</label><textarea id="ni" rows="2"></textarea><p id="npv" class="mut"></p><button class="btn or">Submit order</button></form></div>`},
+            od() {
+                const o = O(A); if (!o) return '<p>Order not found.</p>'; const p = P(o.prod), c = C(o.cust), inv = o.inv && I(o.inv); let b = '';
+                if (U.role == 'S') {
+                    if (o.status == 'Pending Approval') b = `<button class="btn or" onclick="approve('${o.id}')">Approve</button><button class="btn r" onclick="reject('${o.id}')">Reject</button>`;
+                    if (o.status == 'Approved') b = `<button class="btn or" onclick="dispatchF('${o.id}')">Assign vehicle &amp; dispatch</button>`;
+                    if (o.status == 'Partially Delivered' && o.disc && !o.rec) b = `<button class="btn or" onclick="reconcile('${o.id}')">Reconcile discrepancy &amp; close order</button>`;
+                    if (['Delivered'].includes(o.status) && !o.inv) b = `<button class="btn or" onclick="mkInv('${o.id}')">Generate invoice</button>`;
+                }
+                else if (o.status == 'Dispatched') b = `<button class="btn or" onclick="receive('${o.id}')">Confirm receipt</button>`;
+                if (U.role == 'B' && ['Pending Approval'].includes(o.status)) b += `<button class="btn r" onclick="cancelO('${o.id}')">Cancel order</button>`;
+                return `<div class="top"><h1>${o.no} ${bg(o.status)}</h1><button class="btn g" onclick="go('ord')">Back</button></div><div class="card"><div class="fg"><div><label>Buyer</label>${esc(c.name)}</div><div><label>Product</label>${esc(p.name)}</div><div><label>Ordered</label>${q(o.qty)} ${p.unit} @ ${inr(o.rate)}</div><div><label>Order total (incl. ${o.tax}% tax)</label>${inr(oTot(o, o.qty))}</div><div><label>Requested delivery</label>${o.want}</div><div><label>PO ref</label>${esc(o.po || '-')}</div></div><p>${esc(o.note || '')}</p>${b}</div>
+ ${o.disp ? `<div class="card"><h3>Delivery</h3><div class="fg"><div><label>Vehicle</label>${esc(o.disp.veh)}</div><div><label>Driver</label>${esc(o.disp.drv)} ${esc(o.disp.ph)}</div><div><label>Dispatched qty</label>${q(o.disp.qty)}</div><div><label>Challan</label>${o.disp.ch}</div><div><label>Received qty</label>${o.recq != null ? q(o.recq) : 'Awaiting confirmation'}</div><div><label>Shortage</label>${o.disc ? `<b style="color:var(--bad)">${q(o.disc)} ${p.unit}${o.rec ? ' (reconciled)' : ' – needs reconciliation'}</b>` : 'None'}</div></div></div>` : ''}
+ ${inv ? `<div class="card"><h3>Invoice ${inv.no} ${bg(ist(inv))}</h3>Amount ${inr(inv.amt)} · Paid ${inr(paid(inv))} · Balance ${inr(bal(inv))} · Due ${due(inv)}<p><button class="btn" onclick="showInv('${inv.id}')">View / print</button></p></div>` : ''}
+ <div class="card"><h3>Activity timeline</h3><div class="tl">${o.h.map(h => `<p><b>${esc(h.s)}</b> – ${esc(h.u)}<br><span class="mut">${h.t} ${esc(h.n)}</span></p>`).join('')}</div></div>`
+            },
+            cust() { return `<div class="top"><h1>Customers</h1><button class="btn or" onclick="addCust()">Add customer</button></div><div class="card">${tbl(['Customer', 'Type', 'City', 'Credit limit', 'Terms', 'Outstanding', ''], S.custs.map(c => `<tr><td>${esc(c.name)}</td><td>${esc(c.type)}</td><td>${esc(c.city)}</td><td>${inr(c.credit)}</td><td>${c.terms} days</td><td>${inr(custOut(c.id))}</td><td><button class="btn g" onclick="stmt('${c.id}')">Ledger</button></td></tr>`))}</div>` },
+            prod() { return `<div class="top"><h1>Products &amp; stock</h1><button class="btn or" onclick="addProd()">Add product</button></div><div class="card">${tbl(['Product', 'Category', 'Price', 'Tax', 'Stock', 'Reserved', 'Available', 'Min', ''], S.prods.map(p => `<tr><td>${esc(p.name)}</td><td>${p.cat}</td><td>${inr(p.price)}/${p.unit}</td><td>${p.tax}%</td><td>${q(p.stock)}</td><td>${q(p.res)}</td><td>${q(p.stock - p.res)}</td><td>${q(p.min)}</td><td><button class="btn g" onclick="adjust('${p.id}')">Adjust stock</button></td></tr>`))}</div><p class="mut">Stock is reserved on approval and deducted on dispatch.</p>` },
+            inv() { return `<h1>Invoices</h1><div class="card">${tbl(['Invoice', 'Order', 'Customer', 'Amount', 'Paid', 'Balance', 'Due', 'Overdue', 'Status', ''], [...myInv()].reverse().map(i => `<tr><td>${i.no}</td><td>${O(i.order).no}</td><td>${esc(C(i.cust).name)}</td><td>${inr(i.amt)}</td><td>${inr(paid(i))}</td><td>${inr(bal(i))}</td><td>${due(i)}</td><td>${od(i) ? od(i) + ' d' : '-'}</td><td>${bg(ist(i))}</td><td><button class="btn g" onclick="showInv('${i.id}')">View</button>${U.role == 'B' && bal(i) > 0 ? `<button class="btn or" onclick="payF('${i.id}')">Pay</button>` : ''}</td></tr>`))}</div>` },
+            pay() { return `<h1>Payments</h1><p class="mut">Only verified payments count as received.</p><div class="card">${tbl(['Payment', 'Invoice', 'Customer', 'Date', 'Amount', 'Method', 'UTR / Ref', 'Status', ''], [...myPay()].reverse().map(p => `<tr><td>${p.no}</td><td>${I(p.inv).no}</td><td>${esc(C(p.cust).name)}</td><td>${p.date}</td><td>${inr(p.amt)}</td><td>${p.meth}</td><td>${esc(p.utr)}</td><td>${bg(p.st)}</td><td>${U.role == 'S' && p.st == 'Pending Verification' ? `<button class="btn or" onclick="verify('${p.id}',1)">Verify</button><button class="btn r" onclick="verify('${p.id}',0)">Reject</button>` : p.st == 'Verified' ? `<button class="btn g" onclick="rcpt('${p.id}')">Receipt</button>` : ''}</td></tr>`))}</div>` },
+            stm() { return stmtHTML(U.cust) },
+            wa() { return `<h1>WhatsApp notifications</h1><div class="warn">Demo mode. No WhatsApp Business API credentials are configured, so messages are queued and logged here but never sent. Real delivery needs a backend with Cloud API credentials.</div><div class="card">${tbl(['Time', 'To', 'Message', 'Status'], S.wa.map(w => `<tr><td>${w.t}</td><td>${esc(w.to)}</td><td style="white-space:normal">${esc(w.msg)}</td><td>${esc(w.st)}</td></tr>`))}</div>` },
+            aud() { return `<h1>Audit log</h1><div class="card">${tbl(['Time', 'User', 'Action', 'Ref'], S.audit.map(a => `<tr><td>${a.t}</td><td>${esc(a.u)}</td><td style="white-space:normal">${esc(a.a)}</td><td>${esc(a.ref)}</td></tr>`))}</div>` }
+        };
+        function pv() { const p = P(np.value), n = +nq.value || 0; if (!p) return; const b = Math.round(n * p.price); npv.textContent = `Estimated total: ${inr(b + Math.round(b * p.tax / 100))} (${p.tax}% tax)` }
+        function placeOrder(e) {
+            e.preventDefault(); const p = P(np.value), n = +nq.value; if (!(n > 0)) { toast('Enter a valid quantity'); return } const no = 'ORD-' + new Date().getFullYear() + '-' + String(S.seq.o++).padStart(5, '0');
+            const o = { id: 'o' + S.seq.o, no, cust: U.cust, prod: p.id, qty: n, rate: p.price, tax: p.tax, status: '', date: today(), want: nd.value, po: nr.value, note: ni.value, h: [] }; hist(o, 'Pending Approval', 'Placed by buyer'); S.orders.push(o);
+            log('Order placed ' + no, no); S.notes.push(no); save(); toast('Order ' + no + ' submitted'); go('od', o.id)
+        }
+        function approve(id) {
+            const o = O(id), p = P(o.prod); if (p.stock - p.res < o.qty) { toast('Not enough available stock to approve'); return } p.res += o.qty; hist(o, 'Approved', 'Stock reserved');
+            wa(o.cust, `ORDER CONFIRMATION – ${o.no}: ${P(o.prod).name} ${q(o.qty)} ${p.unit} @ ${inr(o.rate)}. Total ${inr(oTot(o, o.qty))}. Expected delivery ${o.want}. Status: Confirmed`); log('Order approved', o.no); save(); render()
+        }
+        function reject(id) { const r = prompt('Reason for rejection (required)'); if (!r || !r.trim()) return; const o = O(id); hist(o, 'Rejected', r); wa(o.cust, `Order ${o.no} rejected: ${r}`); log('Order rejected: ' + r, o.no); save(); render() }
+        function cancelO(id) { const o = O(id); hist(o, 'Cancelled', 'By buyer'); log('Order cancelled', o.no); save(); render() }
+        function dispatchF(id) { const o = O(id); modal(`<h3>Dispatch ${o.no}</h3><div class="fg"><div><label>Vehicle number</label><input id="dv" value="DL01AB1234"></div><div><label>Driver name</label><input id="dn" value="Rahul"></div><div><label>Driver phone</label><input id="dp"></div><div><label>Dispatch quantity</label><input id="dq" type="number" value="${o.qty}" max="${o.qty}"></div></div><p><button class="btn or" onclick="doDispatch('${id}')">Mark dispatched</button><button class="btn g" onclick="modal()">Close</button></p>`) }
+        function doDispatch(id) {
+            const o = O(id), p = P(o.prod), n = +dq.value; if (!dv.value.trim() || !dn.value.trim() || !(n > 0 && n <= o.qty)) { toast('Vehicle, driver and a valid quantity (up to ordered qty) are required'); return }
+            p.res = Math.max(0, p.res - o.qty); p.stock -= n; o.disp = { veh: dv.value.trim(), drv: dn.value.trim(), ph: dp.value, qty: n, ch: 'CH-' + String(++S.seq.d).padStart(5, '0') }; hist(o, 'Dispatched', `${o.disp.veh}, driver ${o.disp.drv}, ${q(n)} ${p.unit}`);
+            wa(o.cust, `Order ${o.no} dispatched. Vehicle ${o.disp.veh}, driver ${o.disp.drv} ${o.disp.ph}. Quantity ${q(n)} ${p.unit}.`); log('Dispatched', o.no); modal(); save(); render()
+        }
+        function receive(id) {
+            const o = O(id), v = prompt(`Quantity received (dispatched: ${q(o.disp.qty)})`); if (v === null) return; const n = +v; if (!(n >= 0) || n > o.disp.qty * 1.5) { toast('Invalid quantity'); return }
+            o.recq = n; o.disc = Math.max(0, o.disp.qty - n); if (n >= o.qty && !o.disc) hist(o, 'Delivered', 'Received ' + q(n)); else { hist(o, 'Partially Delivered', `Received ${q(n)}, shortage ${q(o.disc)}`); if (!o.disc) o.rec = false }
+            log(`Receipt confirmed ${q(n)} (shortage ${q(o.disc)})`, o.no); if (o.disc) S.notes.push('Delivery discrepancy on ' + o.no); save(); render()
+        }
+        function reconcile(id) { const o = O(id); if (!confirm(`Accept received quantity ${q(o.recq)} as final and close ${o.no} as fulfilled? Invoice will be raised on the received quantity.`)) return; o.rec = true; hist(o, 'Delivered', 'Closed after reconciliation; received qty accepted'); log('Discrepancy reconciled', o.no); save(); render() }
+        function mkInv(id) {
+            const o = O(id); if (o.inv) return; const n = o.recq != null ? o.recq : o.qty; const i = { id: 'i' + (++S.seq.i), no: 'INV-' + new Date().getFullYear() + '-' + String(S.seq.i).padStart(5, '0'), order: id, cust: o.cust, qty: n, amt: oTot(o, n), date: today(), terms: C(o.cust).terms };
+            S.inv.push(i); o.inv = i.id; wa(o.cust, `Invoice ${i.no} generated: ${inr(i.amt)}, due ${due(i)}`); log('Invoice generated ' + i.no + ' ' + inr(i.amt), o.no); save(); render()
+        }
+        function payF(iid) { const i = I(iid); modal(`<h3>Record payment for ${i.no}</h3><p>Balance: <b>${inr(bal(i))}</b></p><div class="fg"><div><label>Amount (₹)</label><input id="pa" type="number" step="0.01" min="0.01"></div><div><label>Method</label><select id="pm">${['UPI', 'NEFT', 'RTGS', 'IMPS', 'Bank Transfer', 'Cheque', 'Cash'].map(m => `<option>${m}</option>`).join('')}</select></div><div><label>UTR / reference</label><input id="pu"></div></div><p><button class="btn or" onclick="doPay('${iid}')">Submit for verification</button><button class="btn g" onclick="modal()">Close</button></p><p class="mut">Payment counts as received only after the supplier verifies it.</p>`) }
+        function doPay(iid) {
+            const i = I(iid), a = Math.round(parseFloat(pa.value) * 100), u = pu.value.trim(); const pending = S.pay.filter(p => p.inv == iid && p.st == 'Pending Verification').reduce((x, p) => x + p.amt, 0);
+            if (!(a > 0) || !u) { toast('Amount and UTR / reference are required'); return } if (S.pay.some(p => p.utr.toLowerCase() == u.toLowerCase() && p.st != 'Rejected')) { toast('Duplicate: this UTR is already recorded'); return }
+            if (a > bal(i) - pending) { toast('Amount exceeds remaining balance (including pending payments)'); return }
+            const p = { id: 'y' + (++S.seq.p), no: 'PAY-' + String(S.seq.p).padStart(5, '0'), inv: iid, cust: i.cust, amt: a, meth: pm.value, utr: u, date: today(), st: 'Pending Verification' }; S.pay.push(p); log('Payment submitted ' + inr(a) + ' UTR ' + u, i.no); modal(); save(); toast('Submitted for verification'); render()
+        }
+        function verify(id, ok) { const p = S.pay.find(x => x.id == id); p.st = ok ? 'Verified' : 'Rejected'; if (ok) { const i = I(p.inv); wa(p.cust, `Payment ${inr(p.amt)} received for ${i.no}. Remaining balance ${inr(bal(i))}. Due ${due(i)}`) } log('Payment ' + p.st + ' ' + p.no + ' ' + inr(p.amt), p.no); save(); render() }
+        function docHead(t) { return `<h3>${t}</h3><p class="mut">Indian Oil &amp; Honey Supply Management – Sharma Oil &amp; Honey Traders</p>` }
+        function showInv(id) {
+            const i = I(id), o = O(i.order), p = P(o.prod), c = C(i.cust), base = Math.round(i.qty * o.rate), tx = i.amt - base;
+            modal(`${docHead('Sales Invoice ' + i.no)}<p>Date ${i.date} · Due ${due(i)} · Order ${o.no}<br>Bill to: <b>${esc(c.name)}</b>, ${esc(c.city)}</p>${tbl(['Item', 'Qty', 'Rate', 'Amount'], [`<tr><td>${esc(p.name)}</td><td>${q(i.qty)} ${p.unit}</td><td>${inr(o.rate)}</td><td>${inr(base)}</td></tr>`, `<tr><td colspan="3">Tax @ ${o.tax}%</td><td>${inr(tx)}</td></tr>`, `<tr><td colspan="3"><b>Total</b></td><td><b>${inr(i.amt)}</b></td></tr>`, `<tr><td colspan="3">Paid (verified)</td><td>${inr(paid(i))}</td></tr>`, `<tr><td colspan="3"><b>Balance</b></td><td><b>${inr(bal(i))}</b></td></tr>`])}<p class="mut">Authorized signature: ______________</p><p class="np"><button class="btn or" onclick="window.print()">Print / save PDF</button><button class="btn g" onclick="modal()">Close</button></p>`)
+        }
+        function rcpt(id) { const p = S.pay.find(x => x.id == id); modal(`${docHead('Payment Receipt ' + p.no)}<p>Received from <b>${esc(C(p.cust).name)}</b> ${inr(p.amt)} via ${p.meth} (ref ${esc(p.utr)}) on ${p.date} against ${I(p.inv).no}.</p><p class="np"><button class="btn or" onclick="window.print()">Print</button><button class="btn g" onclick="modal()">Close</button></p>`) }
+        function stmtRows(cid) { const r = []; S.inv.filter(i => i.cust == cid).forEach(i => r.push({ d: i.date, t: 'Invoice ' + i.no, dr: i.amt, cr: 0 })); S.pay.filter(p => p.cust == cid && p.st == 'Verified').forEach(p => r.push({ d: p.date, t: 'Payment ' + p.no + ' (' + p.meth + ')', dr: 0, cr: p.amt })); r.sort((a, b) => a.d < b.d ? -1 : 1); let b = 0; return r.map(x => (b += x.dr - x.cr, { ...x, b })) }
+        function stmtHTML(cid) { const r = stmtRows(cid); return `<div class="top"><h1>Account statement – ${esc(C(cid).name)}</h1><button class="btn g np" onclick="window.print()">Print / save PDF</button></div><div class="card">${tbl(['Date', 'Particulars', 'Debit', 'Credit', 'Balance'], r.map(x => `<tr><td>${x.d}</td><td>${esc(x.t)}</td><td>${x.dr ? inr(x.dr) : ''}</td><td>${x.cr ? inr(x.cr) : ''}</td><td>${inr(x.b)}</td></tr>`))}<p><b>Outstanding: ${inr(custOut(cid))}</b></p></div>` }
+        function stmt(cid) { modal(stmtHTML(cid) + '<button class="btn g np" onclick="modal()">Close</button>') }
+        function addCust() { modal(`<h3>Add customer</h3><div class="fg"><div><label>Company name</label><input id="cn"></div><div><label>Type</label><select id="ct"><option>Petrol Pump</option><option>Distributor</option><option>Retailer</option><option>Company</option></select></div><div><label>City</label><input id="cc"></div><div><label>WhatsApp number</label><input id="cw"></div><div><label>Credit limit (₹)</label><input id="cl" type="number" value="500000"></div><div><label>Payment terms (days)</label><input id="cd" type="number" value="15"></div></div><p><button class="btn or" onclick="saveCust()">Save customer</button><button class="btn g" onclick="modal()">Close</button></p>`) }
+        function saveCust() { if (!cn.value.trim()) { toast('Company name is required'); return } S.custs.push({ id: 'c' + (S.custs.length + Date.now() % 1000), name: cn.value.trim(), type: ct.value, city: cc.value, wa: cw.value, credit: Math.round(cl.value * 100), terms: +cd.value || 0 }); log('Customer added ' + cn.value); modal(); save(); render() }
+        function addProd() { modal(`<h3>Add product</h3><div class="fg"><div><label>Name</label><input id="an"></div><div><label>Category</label><select id="ac"><option>Petroleum</option><option>Honey</option><option>Other</option></select></div><div><label>Unit</label><select id="au"><option>Litres</option><option>Kilograms</option><option>Metric Tonnes</option><option>Units</option></select></div><div><label>Selling price (₹/unit)</label><input id="ap" type="number" step="0.01"></div><div><label>Tax %</label><input id="at" type="number" value="0"></div><div><label>Opening stock</label><input id="as" type="number" value="0"></div></div><p><button class="btn or" onclick="saveProd()">Save product</button><button class="btn g" onclick="modal()">Close</button></p>`) }
+        function saveProd() { if (!an.value.trim() || !(+ap.value > 0)) { toast('Name and a valid price are required'); return } S.prods.push({ id: 'p' + Date.now(), name: an.value.trim(), cat: ac.value, unit: au.value, price: Math.round(ap.value * 100), cost: 0, tax: +at.value, stock: +as.value, res: 0, min: 0 }); log('Product added ' + an.value); modal(); save(); render() }
+        function adjust(id) { const p = P(id), v = prompt(`Adjust ${p.name} stock by (use negative for wastage/damage). Current: ${q(p.stock)}`); if (v === null || isNaN(+v) || +v == 0) return; const r = prompt('Reason (required)'); if (!r) return; p.stock += +v; log(`Stock adjusted ${v} for ${p.name}: ${r}`); save(); render() }
+        render();
+    </script>
+</body>
+
+</html>
